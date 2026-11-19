@@ -1,7 +1,7 @@
 import uuid
 import streamlit as st
 from langchain_core.messages import AIMessage, AIMessageChunk, HumanMessage
-from langgraph_database import chatbot, retrieve_all_threads
+from langraph_tool_backend import chatbot, retrieve_all_threads
 
 # ******************************** Page Config & Styling ********************************
 st.set_page_config(page_title="LangGraph Chatbot", page_icon="💬", layout="wide")

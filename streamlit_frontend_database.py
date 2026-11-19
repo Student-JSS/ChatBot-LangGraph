@@ -115,10 +115,23 @@ if user_input:
     with st.chat_message("user"):
         st.text(user_input)
 
-    # Stream and store the assistant reply
-    with st.chat_message("assistant"):
-        ai_message = st.write_stream(stream_ai_text(user_input))
+    CONFIG = {
+        "configurable": {"thread_id": st.session_state["thread_id"]},
+        "metadata": {
+            "thread_id": st.session_state["thread_id"]
+        },
+        "run_name": "chat_turn",
+    }
 
-    st.session_state["message_history"].append(
-        {"role": "assistant", "content": ai_message}
-    )
+    # first add the message to message_history
+    with st.chat_message('assistant'):
+
+        ai_message = st.write_stream(
+            message_chunk.content for message_chunk, metadata in chatbot.stream(
+                {'messages': [HumanMessage(content=user_input)]},
+                config= CONFIG,
+                stream_mode= 'messages'
+            )
+        )
+
+    st.session_state['message_history'].append({'role': 'assistant', 'content': ai_message})
